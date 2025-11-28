@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SF Trip & Tools 3.0</title>
+    <title>SF Trip & Tools 4.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,7 +12,7 @@
         .card { background: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid #E5E7EB; overflow: hidden; }
         .tag { padding: 3px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 500; display: inline-block; margin-right: 4px; margin-bottom: 4px;}
         .btn-action { transition: all 0.2s; }
-        .btn-action:active { transform: scale(0.96); }
+        .btn-action:active { transform: scale(0.96); background-color: #F3F4F6; }
         
         /* Categories Colors */
         .tag-food { background: #FEF3C7; color: #92400E; }
@@ -23,6 +23,15 @@
         /* Navigation */
         .nav-item.active { color: #2563EB; font-weight: 600; }
         .nav-item { color: #9CA3AF; transition: color 0.3s; }
+
+        /* Accordion Details */
+        details > summary { list-style: none; cursor: pointer; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary ~ * { animation: sweep .3s ease-in-out; }
+        @keyframes sweep { 0%    {opacity: 0; transform: translateY(-10px)} 100%  {opacity: 1; transform: translateY(0)} }
+        
+        .rotate-icon { transition: transform 0.3s; }
+        details[open] .rotate-icon { transform: rotate(180deg); }
 
         /* Utils */
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -54,140 +63,197 @@
 
     <section id="tools-container" class="hidden pt-28 px-4 max-w-lg mx-auto fade-in pb-20">
         
+        <div class="card mb-6 p-4 border-l-4 border-purple-500">
+            <h3 class="font-bold mb-3 text-gray-800 flex items-center"><i class="fas fa-language text-purple-600 mr-2"></i> 即時翻譯助手</h3>
+            <textarea id="trans-input" rows="2" class="w-full bg-gray-50 p-3 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-purple-400 mb-3" placeholder="輸入文字... (Ex: 請問這個可以試穿嗎?)"></textarea>
+            <div class="flex gap-2">
+                <button onclick="translateText('en')" class="flex-1 bg-purple-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-purple-700 active:scale-95 transition"><i class="fas fa-arrow-right mr-1"></i> 翻成英文</button>
+                <button onclick="translateText('zh-TW')" class="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg text-sm font-medium hover:bg-gray-300 active:scale-95 transition"><i class="fas fa-arrow-left mr-1"></i> 翻成中文</button>
+            </div>
+        </div>
+
         <div class="card mb-6">
             <div class="bg-blue-600 text-white p-3 px-4 flex justify-between items-center">
-                <h3 class="font-bold"><i class="fas fa-parking mr-2"></i> 停車場精準導航</h3>
-                <span class="text-[10px] bg-blue-700 px-2 py-1 rounded">自駕必備</span>
+                <h3 class="font-bold text-sm"><i class="fas fa-parking mr-2"></i> 停車導航 & AVIS</h3>
             </div>
-            <div class="p-4 space-y-4">
+            <div class="p-4 space-y-3">
                 <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 mb-2">
                     <div class="flex justify-between items-center mb-1">
-                        <span class="text-xs text-blue-600 font-bold">AVIS 租車資訊</span>
+                        <span class="text-xs text-blue-600 font-bold">AVIS 預約代號</span>
                         <span class="text-xs font-mono font-bold select-all">49797844TB5</span>
                     </div>
                     <div class="text-sm text-gray-700">取/還：Mountain View (Old Middlefield Way)</div>
                 </div>
-
-                <div class="grid grid-cols-1 gap-3">
-                    <a href="https://maps.google.com/?cid=5140474574959447673&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ0" target="_blank" class="btn-action flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 border border-gray-200">
-                        <div class="flex items-center">
-                            <i class="fas fa-history text-gray-400 w-8 text-center"></i>
-                            <div class="text-sm font-bold text-gray-700">電腦歷史博物館</div>
-                        </div>
-                        <span class="text-xs text-blue-500 font-medium">導航至停車場 <i class="fas fa-chevron-right ml-1"></i></span>
+                <div class="grid grid-cols-2 gap-3">
+                    <a href="https://maps.google.com/?cid=5140474574959447673&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ0" target="_blank" class="bg-gray-50 p-2 rounded-lg text-center border border-gray-100 active:bg-gray-100">
+                        <div class="text-[10px] text-gray-400">Computer Museum</div>
+                        <div class="text-xs font-bold text-blue-600">導航停車場</div>
                     </a>
-                    <a href="https://maps.google.com/?cid=5140474574959447673&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ1" target="_blank" class="btn-action flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 border border-gray-200">
-                        <div class="flex items-center">
-                            <i class="fas fa-apple-alt text-gray-400 w-8 text-center"></i>
-                            <div class="text-sm font-bold text-gray-700">Apple Park 訪客中心</div>
-                        </div>
-                        <span class="text-xs text-blue-500 font-medium">導航至車庫 <i class="fas fa-chevron-right ml-1"></i></span>
+                    <a href="https://maps.google.com/?cid=5140474574959447673&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ1" target="_blank" class="bg-gray-50 p-2 rounded-lg text-center border border-gray-100 active:bg-gray-100">
+                        <div class="text-[10px] text-gray-400">Apple Park</div>
+                        <div class="text-xs font-bold text-blue-600">導航訪客車庫</div>
                     </a>
-                    <a href="https://maps.google.com/?cid=5140474574959447673&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ2" target="_blank" class="btn-action flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 border border-gray-200">
-                        <div class="flex items-center">
-                            <i class="fas fa-palette text-gray-400 w-8 text-center"></i>
-                            <div class="text-sm font-bold text-gray-700">SFMOMA (舊金山)</div>
-                        </div>
-                        <span class="text-xs text-blue-500 font-medium">5th & Mission Garage <i class="fas fa-chevron-right ml-1"></i></span>
+                    <a href="https://maps.google.com/?cid=5140474574959447673&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ2" target="_blank" class="bg-gray-50 p-2 rounded-lg text-center border border-gray-100 active:bg-gray-100">
+                        <div class="text-[10px] text-gray-400">SFMOMA</div>
+                        <div class="text-xs font-bold text-blue-600">5th & Mission</div>
                     </a>
-                    <a href="https://maps.google.com/?cid=5140474574959447673&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ3" target="_blank" class="btn-action flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 border border-gray-200">
-                        <div class="flex items-center">
-                            <i class="fas fa-typewriter text-gray-400 w-8 text-center"></i>
-                            <div class="text-sm font-bold text-gray-700">美國遺產博物館</div>
-                        </div>
-                        <span class="text-xs text-blue-500 font-medium">導航 <i class="fas fa-chevron-right ml-1"></i></span>
+                    <a href="https://maps.google.com/?cid=5140474574959447673&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ3" target="_blank" class="bg-gray-50 p-2 rounded-lg text-center border border-gray-100 active:bg-gray-100">
+                        <div class="text-[10px] text-gray-400">MOAH 博物館</div>
+                        <div class="text-xs font-bold text-blue-600">導航前往</div>
                     </a>
                 </div>
             </div>
         </div>
 
+        <h3 class="font-bold mb-3 text-gray-800 ml-1">實用英語攻略</h3>
+        
+        <details class="card mb-3 group">
+            <summary class="p-4 flex justify-between items-center font-bold text-gray-700 bg-white">
+                <span><i class="fas fa-passport text-blue-500 w-6 text-center mr-2"></i> 機場入境 (Immigration)</span>
+                <i class="fas fa-chevron-down text-gray-400 text-xs rotate-icon"></i>
+            </summary>
+            <div class="px-4 pb-4 bg-gray-50 text-sm space-y-3 pt-2 border-t border-gray-100">
+                <div class="flex flex-col">
+                    <span class="text-gray-500 text-xs">來訪目的?</span>
+                    <span class="font-medium">"I'm here for a conference at Stanford University."</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 text-xs">待多久?</span>
+                    <span class="font-medium">"I will be staying for 7 days."</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 text-xs">有東西申報嗎?</span>
+                    <span class="font-medium">"I have nothing to declare."</span>
+                </div>
+            </div>
+        </details>
+
+        <details class="card mb-3 group">
+            <summary class="p-4 flex justify-between items-center font-bold text-gray-700 bg-white">
+                <span><i class="fas fa-taxi text-yellow-500 w-6 text-center mr-2"></i> 交通 & 問路 (Transport)</span>
+                <i class="fas fa-chevron-down text-gray-400 text-xs rotate-icon"></i>
+            </summary>
+            <div class="px-4 pb-4 bg-gray-50 text-sm space-y-3 pt-2 border-t border-gray-100">
+                <div class="bg-yellow-50 p-2 rounded border border-yellow-100 text-xs text-yellow-800 mb-2">
+                    💡 <strong>加油技巧:</strong> 若刷卡機問 ZIP Code，試試 "00000"。
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 text-xs">加油 (加滿/普通油)</span>
+                    <span class="font-medium">"Fill it up with Regular, please."</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 text-xs">Uber 確認</span>
+                    <span class="font-medium">"Is this the ride for [Your Name]?"</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 text-xs">請問洗手間在哪?</span>
+                    <span class="font-medium">"Excuse me, where is the restroom?"</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 text-xs">請問這個地址怎麼走?</span>
+                    <span class="font-medium">"How do I get to this address?"</span>
+                </div>
+            </div>
+        </details>
+
+        <details class="card mb-3 group">
+            <summary class="p-4 flex justify-between items-center font-bold text-gray-700 bg-white">
+                <span><i class="fas fa-utensils text-orange-500 w-6 text-center mr-2"></i> 餐廳點餐 (Dining)</span>
+                <i class="fas fa-chevron-down text-gray-400 text-xs rotate-icon"></i>
+            </summary>
+            <div class="px-4 pb-4 bg-gray-50 text-sm space-y-3 pt-2 border-t border-gray-100">
+                <div class="flex flex-col">
+                    <span class="text-gray-500 text-xs">兩位用餐</span>
+                    <span class="font-medium">"Table for two, please."</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 text-xs">請給我菜單</span>
+                    <span class="font-medium">"Can I see the menu, please?"</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 text-xs">我要外帶</span>
+                    <span class="font-medium">"To go, please." (or "Take out")</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 text-xs">買單/結帳</span>
+                    <span class="font-medium">"Can we have the check, please?"</span>
+                </div>
+            </div>
+        </details>
+
+        <details class="card mb-3 group">
+            <summary class="p-4 flex justify-between items-center font-bold text-gray-700 bg-white">
+                <span><i class="fas fa-shopping-bag text-pink-500 w-6 text-center mr-2"></i> 購物 & 買票 (Shopping)</span>
+                <i class="fas fa-chevron-down text-gray-400 text-xs rotate-icon"></i>
+            </summary>
+            <div class="px-4 pb-4 bg-gray-50 text-sm space-y-3 pt-2 border-t border-gray-100">
+                <div class="flex flex-col">
+                    <span class="text-gray-500 text-xs">我要買一張成人票</span>
+                    <span class="font-medium">"One adult ticket, please."</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 text-xs">可以試穿嗎?</span>
+                    <span class="font-medium">"Can I try this on?"</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 text-xs">有別的尺寸/顏色嗎?</span>
+                    <span class="font-medium">"Do you have this in a larger size / other colors?"</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 text-xs">請給我收據</span>
+                    <span class="font-medium">"Can I have a receipt?"</span>
+                </div>
+            </div>
+        </details>
+
+        <details class="card mb-6 group">
+            <summary class="p-4 flex justify-between items-center font-bold text-gray-700 bg-white">
+                <span><i class="fas fa-concierge-bell text-indigo-500 w-6 text-center mr-2"></i> 住宿 & 求助 (Hotel/Help)</span>
+                <i class="fas fa-chevron-down text-gray-400 text-xs rotate-icon"></i>
+            </summary>
+            <div class="px-4 pb-4 bg-gray-50 text-sm space-y-3 pt-2 border-t border-gray-100">
+                <div class="flex flex-col">
+                    <span class="text-gray-500 text-xs">辦理入住</span>
+                    <span class="font-medium">"Check-in, please. My name is..."</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 text-xs">可以寄放行李嗎?</span>
+                    <span class="font-medium">"Can I leave my luggage here?"</span>
+                </div>
+                <div class="bg-red-50 p-2 rounded border border-red-100 text-red-800 mt-2">
+                    <div class="font-bold text-xs mb-1">🆘 緊急狀況</div>
+                    <div class="text-sm">"Please call 911."</div>
+                    <div class="text-sm">"I lost my passport."</div>
+                </div>
+            </div>
+        </details>
+
         <div class="card mb-6 p-5">
             <h3 class="font-bold mb-4 text-gray-800 flex items-center"><i class="fas fa-file-invoice-dollar text-green-600 mr-2"></i> 加州小費計算機</h3>
-            
             <div class="mb-4">
-                <label class="text-xs text-gray-500 uppercase font-bold">帳單金額 (Bill)</label>
+                <label class="text-xs text-gray-500 uppercase font-bold">帳單金額</label>
                 <div class="relative">
                     <span class="absolute left-3 top-2 text-gray-400">$</span>
                     <input type="number" id="bill-amount" placeholder="0.00" class="w-full bg-gray-50 pl-7 p-2 rounded-lg border border-gray-200 text-xl font-bold text-gray-800 focus:outline-none focus:border-green-500">
                 </div>
             </div>
-
-            <div class="mb-4">
-                <label class="text-xs text-gray-500 uppercase font-bold mb-2 block">服務滿意度</label>
-                <div class="flex justify-between gap-2">
-                    <button onclick="setTip(0.15)" class="flex-1 py-2 rounded-lg border border-green-200 text-green-700 text-sm hover:bg-green-50 focus:bg-green-600 focus:text-white transition">15%<br><span class="text-[9px]">普</span></button>
-                    <button onclick="setTip(0.18)" class="flex-1 py-2 rounded-lg border border-green-200 text-green-700 text-sm hover:bg-green-50 focus:bg-green-600 focus:text-white transition">18%<br><span class="text-[9px]">良</span></button>
-                    <button onclick="setTip(0.20)" class="flex-1 py-2 rounded-lg border border-green-200 text-green-700 text-sm hover:bg-green-50 focus:bg-green-600 focus:text-white transition">20%<br><span class="text-[9px]">優</span></button>
-                    <button onclick="setTip(0.25)" class="flex-1 py-2 rounded-lg border border-green-200 text-green-700 text-sm hover:bg-green-50 focus:bg-green-600 focus:text-white transition">25%<br><span class="text-[9px]">神</span></button>
-                </div>
+            <div class="flex justify-between gap-2 mb-4">
+                <button onclick="setTip(0.15)" class="flex-1 py-2 rounded-lg border border-green-200 text-green-700 text-sm hover:bg-green-50">15%</button>
+                <button onclick="setTip(0.18)" class="flex-1 py-2 rounded-lg border border-green-200 text-green-700 text-sm hover:bg-green-50">18%</button>
+                <button onclick="setTip(0.20)" class="flex-1 py-2 rounded-lg border border-green-200 text-green-700 text-sm hover:bg-green-50">20%</button>
             </div>
-
             <div class="bg-green-50 rounded-xl p-4 flex justify-between items-center border border-green-100">
-                <div>
-                    <div class="text-xs text-green-600">小費 (Tip)</div>
-                    <div class="text-lg font-bold text-green-800" id="tip-display">$0.00</div>
-                </div>
-                <div class="text-right">
-                    <div class="text-xs text-green-600">總計 (Total)</div>
-                    <div class="text-2xl font-bold text-green-800" id="total-display">$0.00</div>
-                </div>
+                <div><div class="text-xs text-green-600">總計 (Total)</div></div>
+                <div class="text-2xl font-bold text-green-800" id="total-display">$0.00</div>
             </div>
         </div>
 
         <div class="card mb-6 p-5">
             <h3 class="font-bold mb-3 text-gray-800 flex items-center"><i class="fas fa-coins text-yellow-500 mr-2"></i> 匯率換算</h3>
             <div class="flex gap-3 items-center">
-                <div class="flex-1">
-                    <label class="text-[10px] text-gray-400 uppercase">USD (美金)</label>
-                    <input type="number" id="usd-input" placeholder="1" class="w-full bg-gray-50 p-2 rounded-lg border border-gray-200 text-lg font-bold">
-                </div>
-                <i class="fas fa-exchange-alt text-gray-300"></i>
-                <div class="flex-1">
-                    <label class="text-[10px] text-gray-400 uppercase">TWD (台幣)</label>
-                    <input type="number" id="twd-input" readonly class="w-full bg-gray-100 p-2 rounded-lg border-none text-lg font-bold text-gray-700">
-                </div>
-            </div>
-            <p class="text-[10px] text-gray-400 mt-2 text-right">匯率設定: 32.8 (可浮動)</p>
-        </div>
-
-        <div class="card mb-6">
-            <div class="bg-indigo-600 text-white p-3 px-4">
-                <h3 class="font-bold"><i class="fas fa-language mr-2"></i> 實用英語 & 攻略</h3>
-            </div>
-            
-            <div class="border-b border-gray-100 p-4">
-                <h4 class="font-bold text-indigo-600 text-sm mb-2"><i class="fas fa-gas-pump mr-1"></i> 加油站攻略</h4>
-                <div class="text-xs text-gray-600 mb-2 bg-gray-50 p-2 rounded">
-                    ⚠️ 刷卡機若問 <strong>Zip Code</strong> (郵遞區號)，可嘗試輸入 <strong>00000</strong> 或 <strong>99999</strong>。若不行，需進店內找店員付款。
-                </div>
-                <div class="space-y-2">
-                    <div class="flex justify-between items-center text-sm">
-                        <span>"Pump number 5, please."</span>
-                        <span class="text-gray-400 text-xs">請開5號油槍</span>
-                    </div>
-                    <div class="flex justify-between items-center text-sm">
-                        <span>"Fill it up, regular."</span>
-                        <span class="text-gray-400 text-xs">加滿 (普通油)</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-4">
-                <h4 class="font-bold text-indigo-600 text-sm mb-2"><i class="fas fa-utensils mr-1"></i> 餐廳點餐</h4>
-                <div class="space-y-2">
-                    <div class="flex justify-between items-center text-sm">
-                        <span>"Table for two, please."</span>
-                        <span class="text-gray-400 text-xs">兩位用餐</span>
-                    </div>
-                    <div class="flex justify-between items-center text-sm">
-                        <span>"Can we have the check?"</span>
-                        <span class="text-gray-400 text-xs">我要結帳</span>
-                    </div>
-                    <div class="flex justify-between items-center text-sm">
-                        <span>"To go / Take out"</span>
-                        <span class="text-gray-400 text-xs">外帶</span>
-                    </div>
-                </div>
+                <input type="number" id="usd-input" placeholder="USD" class="w-1/2 bg-gray-50 p-2 rounded-lg border border-gray-200 font-bold">
+                <i class="fas fa-arrow-right text-gray-300"></i>
+                <input type="number" id="twd-input" readonly class="w-1/2 bg-gray-100 p-2 rounded-lg border-none font-bold text-gray-700" placeholder="TWD">
             </div>
         </div>
 
@@ -207,7 +273,7 @@
     </nav>
 
     <script>
-        // Data
+        // --- 1. Itinerary Data ---
         const itineraryData = [
             { date: "11/30", day: "週日", temp: "14°", icon: "fa-cloud", note: "SFO 抵達 / Sheraton 入住", events: [
                 { time: "15:00", title: "抵達舊金山 (SFO)", type: "transport", icon: "fa-plane-arrival", note: "BR18。搭 Uber 往 Palo Alto。", location: "SFO International Airport" },
@@ -245,9 +311,8 @@
             ]}
         ];
 
-        let currentIndex = 2; // Start on Tuesday
+        let currentIndex = 2;
 
-        // Init
         function init() {
             renderNav();
             renderTimeline();
@@ -310,10 +375,9 @@
             const data = itineraryData[currentIndex];
             document.getElementById('header-temp').innerText = data.temp;
             document.getElementById('header-icon').className = `fas ${data.icon} ml-2 text-lg ${data.icon.includes('rain')?'text-blue-400':'text-yellow-500'}`;
-            // Simulating real-time feel
         }
 
-        // Tools Logic
+        // --- 2. Tools Logic ---
         function switchTab(tab) {
             const main = document.getElementById('main-container');
             const tools = document.getElementById('tools-container');
@@ -329,20 +393,34 @@
             }
         }
 
-        // Tip Calculator
         function setTip(percentage) {
             const bill = parseFloat(document.getElementById('bill-amount').value);
             if(isNaN(bill)) return;
             const tip = bill * percentage;
             const total = bill + tip;
-            document.getElementById('tip-display').innerText = '$' + tip.toFixed(2);
             document.getElementById('total-display').innerText = '$' + total.toFixed(2);
         }
 
-        // Currency
         document.getElementById('usd-input').addEventListener('input', (e) => {
             document.getElementById('twd-input').value = (e.target.value * 32.8).toFixed(0);
         });
+
+        // --- 3. Translation Logic ---
+        function translateText(targetLang) {
+            const input = document.getElementById('trans-input').value;
+            if(!input) return alert("請輸入文字");
+            
+            // Construct Google Translate URL
+            let url = '';
+            if (targetLang === 'en') {
+                // To English
+                url = `https://translate.google.com/?sl=auto&tl=en&text=${encodeURIComponent(input)}&op=translate`;
+            } else {
+                // To Chinese
+                url = `https://translate.google.com/?sl=auto&tl=zh-TW&text=${encodeURIComponent(input)}&op=translate`;
+            }
+            window.open(url, '_blank');
+        }
 
         init();
     </script>
